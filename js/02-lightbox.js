@@ -11,10 +11,6 @@ const galleryMarkup = createGallery(galleryItems);
 gallery.insertAdjacentHTML('beforeend', galleryMarkup);
 
 
-// виклик події по кліку на img
-gallery.addEventListener('click', onImgClick);
-
-
 // функція створення елементів 
 function createGallery(galleryItems) {
     return galleryItems
@@ -30,19 +26,10 @@ function createGallery(galleryItems) {
 };
 
 
-// створимо функцію для збільшення зображення за допомогою бібліотеки simplelightbox
-function onImgClick(e) {
-    e.preventDefault();
-
-    if (e.target.nodeName !== 'IMG') {
-        return;
-    }
-
-    const lightbox = new SimpleLightbox('.gallery a', {
+// застосуємо можливості бібліотеки simplelightbox
+const gallarySlider = new SimpleLightbox('.gallery a', { 
         overlayOpacity: 0.9,
         captionsData: "alt",
-        captionDelay: 400,
+        captionDelay: 250,
         animationSpeed: 500,
-        captionPosition: 'top',
-    });
-};
+});
