@@ -7,9 +7,6 @@ const galleryRef = document.querySelector('.gallery');
 const imgMarkup = createGalary(galleryItems);
 galleryRef.insertAdjacentHTML('beforeend', imgMarkup);
 
-// створимо подію по кліку на зображення (делегуючи подію спільного предка div)
-galleryRef.addEventListener('click', imgOnClick);
-
 
 // функція створення елементів із зображеннями
 function createGalary(galleryItems) {
@@ -30,21 +27,37 @@ function createGalary(galleryItems) {
         .join('')
 }
 
-// функція збільшення зображення по типу відкриття модального вікна
-function imgOnClick (e) {
+// // функція збільшення зображення по типу відкриття модального вікна
+
+
+
+galleryRef.onclick = (e) => {
     e.preventDefault()
     
     if (e.target.nodeName !== "IMG") {
         return;
     }
 
+
     const instance = basicLightbox.create(`
-        <img src="${e.target.dataset.source}" width="800" height="600">`,
-    );
+		<img width="800" height="600" src="${e.target.dataset.source}">
+        `, {
+        closable: true,
+        onShow: () => {
+        document.body.addEventListener("keydown", onKeyEscPress);
+        },
+        onClose: () => {
+        document.body.removeEventListener("keydown", onKeyEscPress);
+        },
+    });
 
-    instance.show()
 
+    function onKeyEscPress(evt) {
+        if (evt.key === 'Escape') {
+            instance.close(evt)
+        }
+    }
+    
 
-    // document.addEventListener("keydown", (instance) => instance.close(););
+    instance.show();
 }
-
